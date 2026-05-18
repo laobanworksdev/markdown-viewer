@@ -1,0 +1,63 @@
+# ---- Swift / SwiftPM ----
+.build/
+.swiftpm/
+Package.resolved
+Packages/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.xcuserstate
+DerivedData/
+*.dSYM/
+*.dSYM.zip
+
+# ---- Build artifacts ----
+build/
+*.app
+*.dmg
+*.pkg
+
+# ---- macOS junk (standard) ----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Icon?
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ---- Editor / IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# ---- Logs / temp ----
+*.log
+*.tmp
+
+# ---- Secrets (defensive) ----
+.env
+.env.*
+!.env.example
+
+# ---- Project seeding files (personal docs, not for public repo) ----
+CHARTER.md
+DESCRIBE.md
+CLAUDE.md
+TRAILS.md
+TODOs.md
+README.md
+notes/
