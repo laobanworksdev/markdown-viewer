@@ -52,6 +52,9 @@ if [[ ! -f "$ICON_SRC" ]]; then
 fi
 cp "$ICON_SRC" "$APP_DIR/Contents/Resources/AppIcon.icns"
 
+# Third-party license attributions (MIT + BSD-3) — required by markdown-it and highlight.js.
+cp "$ROOT/THIRD_PARTY_LICENSES.md" "$APP_DIR/Contents/Resources/THIRD_PARTY_LICENSES.md"
+
 # Info.plist
 cat > "$APP_DIR/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
