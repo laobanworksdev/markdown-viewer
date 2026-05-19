@@ -69,19 +69,79 @@
     }
   });
 
+  // True on the very first render only; lets us preserve scroll on every reload
+  // after that without jumping-to-top on initial load (which would itself be the
+  // wrong default for a fresh open).
+  let hasRenderedOnce = false;
+
+  // Capture the visible scroll position as a percentage of (scrollHeight - innerHeight).
+  // Percentage is reflow-robust (font-size changes, theme swaps, content delta).
+  function getScrollPct() {
+    const el = document.scrollingElement || document.documentElement;
+    const max = el.scrollHeight - window.innerHeight;
+    if (max <= 0) return 0;
+    return Math.min(1, Math.max(0, el.scrollTop / max));
+  }
+
+  function setScrollPct(pct) {
+    const el = document.scrollingElement || document.documentElement;
+    const max = el.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    el.scrollTop = Math.round(pct * max);
+  }
+
+  function showRenderErrorBanner(msg) {
+    let banner = document.getElementById('render-error-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'render-error-banner';
+      banner.setAttribute('role', 'status');
+      document.body.appendChild(banner);
+    }
+    banner.textContent = 'Render error — showing last good version. ' + msg;
+    banner.style.display = 'block';
+  }
+
+  function hideRenderErrorBanner() {
+    const banner = document.getElementById('render-error-banner');
+    if (banner) banner.style.display = 'none';
+  }
+
   window.renderMarkdown = function (text) {
+    const content = document.getElementById('content');
+    const pct = hasRenderedOnce ? getScrollPct() : 0;
+    let html;
     try {
-      const html = md.render(String(text || ''));
-      document.getElementById('content').innerHTML = html;
-      // Re-highlight any code blocks that markdown-it's highlight didn't catch.
-      if (window.hljs) {
-        document.querySelectorAll('pre code:not(.hljs)').forEach(function (el) {
-          try { window.hljs.highlightElement(el); } catch (e) {}
-        });
-      }
-      window.scrollTo(0, 0);
+      html = md.render(String(text || ''));
     } catch (e) {
-      document.getElementById('content').textContent = 'Render error: ' + e.message;
+      // F-01 acceptance: preserve last-good HTML on render error.
+      // First-render error degrades to a plain text body so the user sees *something*.
+      if (!hasRenderedOnce) {
+        content.textContent = 'Render error: ' + e.message;
+        hasRenderedOnce = true;
+        return;
+      }
+      showRenderErrorBanner(e.message);
+      return;
+    }
+
+    content.innerHTML = html;
+    hideRenderErrorBanner();
+
+    // Re-highlight any code blocks that markdown-it's highlight didn't catch.
+    if (window.hljs) {
+      document.querySelectorAll('pre code:not(.hljs)').forEach(function (el) {
+        try { window.hljs.highlightElement(el); } catch (e) {}
+      });
+    }
+
+    if (hasRenderedOnce) {
+      // F-03: restore scroll percentage after re-render. Use rAF so layout has
+      // settled and scrollHeight is accurate.
+      requestAnimationFrame(function () { setScrollPct(pct); });
+    } else {
+      window.scrollTo(0, 0);
+      hasRenderedOnce = true;
     }
   };
 })();
