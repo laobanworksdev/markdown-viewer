@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# F-21 — `mdv` CLI shim. Opens its arguments in MarkdownViewer.
+exec open -a /Applications/MarkdownViewer.app "$@"

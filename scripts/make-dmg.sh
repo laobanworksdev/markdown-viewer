@@ -8,7 +8,7 @@ cd "$ROOT"
 
 APP_NAME="MarkdownViewer"
 VOL_NAME="Markdown Viewer"
-VERSION="0.1.0"
+VERSION="0.2.0-dev"
 BUILD_DIR="$ROOT/build"
 APP="$BUILD_DIR/${APP_NAME}.app"
 DMG="$BUILD_DIR/${APP_NAME}-${VERSION}.dmg"

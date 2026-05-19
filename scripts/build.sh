@@ -9,9 +9,13 @@ cd "$ROOT"
 
 APP_NAME="MarkdownViewer"
 BUNDLE_ID="com.laoban.MarkdownViewer"
-VERSION="0.1.0"
+VERSION="0.2.0-dev"
 BUILD_DIR="$ROOT/build"
 APP_DIR="$BUILD_DIR/${APP_NAME}.app"
+ICON_SRC="$ROOT/assets/AppIcon.icns"
+
+echo "==> regenerating AppIcon.icns"
+"$ROOT/scripts/make-icon.swift" "$ICON_SRC"
 
 echo "==> swift build (release, arm64)"
 swift build -c release --arch arm64
@@ -41,6 +45,13 @@ chmod +x "$APP_DIR/Contents/MacOS/$APP_NAME"
 # Resource bundle — keep its exact name so Bundle.module resolves at runtime.
 cp -R "$RES_BUNDLE" "$APP_DIR/Contents/Resources/"
 
+# App icon — must sit at Contents/Resources/AppIcon.icns (referenced by Info.plist).
+if [[ ! -f "$ICON_SRC" ]]; then
+  echo "ERROR: AppIcon.icns not found at $ICON_SRC (make-icon.swift should have produced it)" >&2
+  exit 1
+fi
+cp "$ICON_SRC" "$APP_DIR/Contents/Resources/AppIcon.icns"
+
 # Info.plist
 cat > "$APP_DIR/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,6 +62,7 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
   <key>CFBundleDisplayName</key><string>Markdown Viewer</string>
   <key>CFBundleIdentifier</key><string>${BUNDLE_ID}</string>
   <key>CFBundleExecutable</key><string>${APP_NAME}</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleSignature</key><string>????</string>
   <key>CFBundleShortVersionString</key><string>${VERSION}</string>

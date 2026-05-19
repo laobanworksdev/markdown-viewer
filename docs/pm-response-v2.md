@@ -148,4 +148,30 @@ None of these block v2.0 coding starting now.
 
 ---
 
+## Corpus grep results (v2.0 week-1 deliverable)
+
+**Run date:** 2026-05-18 (during v2.0 implementation sweep, solo-engineer).
+
+**Command:**
+
+```sh
+grep -rl --include='*.md' -E '\$\$|^[[:space:]]*```mermaid' \
+  /Users/nidaye/Projects /Users/nidaye/Documents/screenshots 2>/dev/null
+```
+
+**Raw match count (before false-positive triage):** 4 docs.
+
+**After excluding `node_modules/` and this repo's own `docs/` (which discuss `$$` syntax meta-textually):**
+
+| Pattern | Hits (docs) | Notes |
+|---|---|---|
+| `$$` (KaTeX display-math fence) | 4 | **All false positives.** Inspection shows: (a) one trip restaurant guide using "$$ - $$$" as price-range notation, (b) two financial/trading retros using `$$` as shorthand for "dollars" ("more wins than wrongs by $$", "concentration $$ amount"), (c) zero docs with real math. |
+| `^```mermaid` (Mermaid fenced block) | 0 | No Mermaid usage anywhere in the corpus. |
+
+**True hits requiring math/diagram rendering: 0 KaTeX, 0 Mermaid.**
+
+**Park decision holds.** Thresholds were ≥5 docs with `$$` to reopen KaTeX and ≥3 docs with `mermaid` fences to reopen Mermaid. Neither threshold is approached. **F-11 KaTeX and F-12 Mermaid stay WON'T-v2.** Re-run the grep on a future v2.x cycle if user behavior shifts.
+
+---
+
 *End of pm-response-v2.md.*
