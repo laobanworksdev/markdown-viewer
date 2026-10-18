@@ -24,6 +24,7 @@ rm -rf "$STAGE" "$DMG"
 mkdir -p "$STAGE"
 cp -R "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
+cp "$ROOT/LICENSE" "$STAGE/LICENSE"
 cp "$ROOT/THIRD_PARTY_LICENSES.md" "$STAGE/THIRD_PARTY_LICENSES.md"
 
 echo "==> hdiutil create $DMG"

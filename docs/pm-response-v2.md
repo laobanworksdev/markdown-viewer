@@ -156,7 +156,7 @@ None of these block v2.0 coding starting now.
 
 ```sh
 grep -rl --include='*.md' -E '\$\$|^[[:space:]]*```mermaid' \
-  /Users/nidaye/Projects /Users/nidaye/Documents/screenshots 2>/dev/null
+  ~/Projects ~/Documents/screenshots 2>/dev/null
 ```
 
 **Raw match count (before false-positive triage):** 4 docs.
