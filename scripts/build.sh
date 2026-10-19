@@ -71,6 +71,7 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
   <key>CFBundleSignature</key><string>????</string>
   <key>CFBundleShortVersionString</key><string>${VERSION}</string>
   <key>CFBundleVersion</key><string>${VERSION}</string>
+  <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Qianli Yang. MIT License.</string>
   <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>NSPrincipalClass</key><string>NSApplication</string>
